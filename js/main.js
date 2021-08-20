@@ -7,6 +7,8 @@ $(document).ready(function() {
         $('body').delay(350).css({
             'overflow': 'visible'
         });
+        var audio = new Audio('sound/sound.mp3');
+        audio.play();
     }, 600);
 })
 
@@ -15,25 +17,6 @@ function init(){
     $('#desc').text(CONFIG.desc)
     $('#yes').text(CONFIG.btnYes)
     $('#no').text(CONFIG.btnNo)
-    window.addEventListener('load', function () {
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        var source = audioCtx.createBufferSource();
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', './sound/sound.mp3');
-        xhr.responseType = 'arraybuffer';
-        xhr.addEventListener('load', function (r) {
-            audioCtx.decodeAudioData(
-                    xhr.response, 
-                    function (buffer) {
-                        source.buffer = buffer;
-                        source.connect(audioCtx.destination);
-                        source.loop = false;
-                    });
-            source.start(0);
-        });
-        xhr.send();
-    });
-
 }
 
 function firstQuestion(){
