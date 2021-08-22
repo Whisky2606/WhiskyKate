@@ -30,6 +30,10 @@ function firstQuestion(){
         confirmButtonText: CONFIG.btnIntro
     }).then(function(){
         $('.content').show(200);
+    }).then(function(){
+        var audio = new Audio('sound/sound.mp3');
+        audio.play();
+        audio.loop = true;
     })
 }
 
@@ -82,12 +86,15 @@ function textGenerate() {
     var count = textVal.length;
     if (count > 0) {
         for (let i = 1; i <= count; i++) {
+            if (n.length >= CONFIG.reply.length){
+                break;
+            }
             n = n + a[i];
-            // if (i == text.length + 1) {
-            //     $('#txtReason').val("");
-            //     n = "";
-            //     break;
-            // }
+            if (i == text.length + 1) {
+                $('#txtReason').val("");
+                // n = "";
+                break;
+            }
         }
     }
     $('#txtReason').val(n);
@@ -95,7 +102,6 @@ function textGenerate() {
 }
 
 function disableButton() {
-    console.log($('#txtReason').val().length);
     if ($('#txtReason').val() && $('#txtReason').val().length < 54) {
         return false
     }
