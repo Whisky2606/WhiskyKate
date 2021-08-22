@@ -18,8 +18,6 @@ function init(){
 }
 
 function firstQuestion(){
-    var audio = new Audio('sound/sound.mp3');
-    audio.play();
     $('.content').hide();
     Swal.fire({
         title: CONFIG.introTitle,
