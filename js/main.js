@@ -18,6 +18,8 @@ function init(){
 }
 
 function firstQuestion(){
+    var audio = new Audio('sound/sound.mp3');
+    audio.play();
     $('.content').hide();
     Swal.fire({
         title: CONFIG.introTitle,
@@ -28,11 +30,9 @@ function firstQuestion(){
         background: '#fff url("img/iput-bg.jpg")',
         imageAlt: 'Custom image',
         confirmButtonText: CONFIG.btnIntro
-      }).then(function(){
+    }).then(function(){
         $('.content').show(200);
     })
-    var audio = new Audio('sound/sound.mp3');
-    audio.play();
 }
 
  // switch button position
@@ -85,27 +85,36 @@ function textGenerate() {
     if (count > 0) {
         for (let i = 1; i <= count; i++) {
             n = n + a[i];
-            if (i == text.length + 1) {
-                $('#txtReason').val("");
-                n = "";
-                break;
-            }
+            // if (i == text.length + 1) {
+            //     $('#txtReason').val("");
+            //     n = "";
+            //     break;
+            // }
         }
     }
     $('#txtReason').val(n);
     setTimeout("textGenerate()", 1);
 }
 
+function disableButton() {
+    console.log($('#txtReason').val().length);
+    if ($('#txtReason').val() && $('#txtReason').val().length < 54) {
+        return false
+    }
+    return true
+}
+
 // show popup
 $('#yes').click(function() {
     var audio = new Audio('sound/tick.mp3');
     audio.play();
+    let text = "";
     Swal.fire({
         title: CONFIG.question,
         html: true,
         width: 900,
         padding: '3em',
-        html: "<input type='text' class='form-control' id='txtReason' onmousemove=textGenerate()  placeholder='Whyyy'>",
+        html: "<input type='text' class='form-control' id='txtReason' onmousemove=textGenerate()  placeholder='Whyyy' onchange='disableButton(this.value)'> ",
         background: '#fff url("img/iput-bg.jpg")',
         backdrop: `
               rgba(0,0,123,0.4)
@@ -115,7 +124,9 @@ $('#yes').click(function() {
             `,
         confirmButtonColor: '#3085d6',
         confirmButtonColor: '#fe8a71',
-        confirmButtonText: CONFIG.btnReply
+        confirmButtonText: CONFIG.btnReply,
+        preConfirm: disableButton,
+        showLoaderOnConfirm: true,
     }).then((result) => {
         if (result.value) {
             Swal.fire({
